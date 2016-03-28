@@ -16,16 +16,14 @@ describe('All feactures', () => {
 
     request = supertest('http://localhost:3000/v1/pokemons')
     return request.post('/')
-      .send({name: 'charmander', type: 'FIRE', level: 1})
+      .send([{name: 'charmander', type: 'FIRE', level: 1},
+              {name: 'Squirtle', type: 'WATER', level: 1},
+              {name: 'Bulbasor', type: 'GRASS', level: 1}])
       .expect(200)
       .then((res) => {
-        return request.post('/')
-          .send({name: 'Bulbasor', type: 'WATER', level: 2})
-          .then(() => {
-            return request.get('/')
-              .then((res) => {
-                pokemons = res.body;
-              });
+        return request.get('/')
+          .then((res) => {
+            pokemons = res.body;
           });
       });
   });

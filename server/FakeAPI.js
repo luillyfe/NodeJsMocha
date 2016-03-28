@@ -61,10 +61,16 @@ app.route('/v1/pokemons')
     if (!validate(req.body)) {
       res.sendStatus(400);
     } else {
-      req.body.id = uuid.v1();
-
-      simpleDB[req.body.id] = req.body;
-
+      var pokemons = [];
+      
+      if (Array.isArray(req.body)) { pokemons = req.body;
+      } else { pokemons.push(req.body); }
+      
+      pokemons.forEach((pokemon) => {
+        pokemon.id = uuid.v1();
+        simpleDB[pokemon.id] = pokemon;
+      });
+      
       res.json(req.body);
     }
   })
